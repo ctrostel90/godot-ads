@@ -5,7 +5,7 @@ import sys
 from methods import print_error
 
 
-libname = "EXTENSION-NAME"
+libname = "godot-ads"
 projectdir = "demo"
 
 localEnv = Environment(tools=["default"], PLATFORM="")
@@ -36,7 +36,11 @@ Run the following command to download godot-cpp:
 env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
 
 env.Append(CPPPATH=["src/"])
+env.Append(LIBS=["TcAdsDll"])
+env.Append(LIBPATH=["lib/"])
 sources = Glob("src/*.cpp")
+
+sources.append(Glob("lib/TcAdsDll.lib")[0])
 
 if env["target"] in ["editor", "template_debug"]:
     try:
@@ -52,6 +56,9 @@ if env["platform"] == "macos" or env["platform"] == "ios":
     filepath = "{}.framework/".format(env["platform"])
     file = "{}.{}.{}".format(libname, env["platform"], env["target"])
 
+
+
+print(env.Command)
 libraryfile = "bin/{}/{}{}".format(env["platform"], filepath, file)
 library = env.SharedLibrary(
     libraryfile,
