@@ -1,0 +1,124 @@
+[gd_scene load_steps=6 format=3 uid="uid://u0tdmw4smkbn"]
+
+[ext_resource type="Script" uid="uid://bo5gasuka7i8l" path="res://delta_robot_type_1.gd" id="1_8j66q"]
+[ext_resource type="CylinderMesh" uid="uid://do8dghuna2shf" path="res://Delta/upper_arm.tres" id="2_awnur"]
+[ext_resource type="CylinderMesh" uid="uid://bbms53aqs2k6a" path="res://Delta/lower_arm.tres" id="3_onscu"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8532a"]
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.01
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_d02gm"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.01
+
+[node name="DeltaRobot_Type1" type="Node3D"]
+script = ExtResource("1_8j66q")
+UpperRadius = 0.5
+UpperArmLength = 0.8
+tcp_position = Vector3(0, 0, -0.709)
+
+[node name="RobotBase" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_8532a")
+
+[node name="MountingPoint1" type="Node3D" parent="RobotBase"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.05, 0)
+
+[node name="Node3D" type="Node3D" parent="RobotBase/MountingPoint1"]
+transform = Transform3D(7.54979e-08, 0.999029, -0.0440604, 0, -0.0440604, -0.999029, -1, 7.54246e-08, -3.32647e-09, 0.5, 0, 0)
+
+[node name="UpperArm" type="MeshInstance3D" parent="RobotBase/MountingPoint1/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = ExtResource("2_awnur")
+
+[node name="LowerArmAttachmentLeft" type="Node3D" parent="RobotBase/MountingPoint1/Node3D/UpperArm"]
+transform = Transform3D(1, 4.33397e-08, 2.65503e-08, 2.98023e-08, -0.454239, -0.89088, 1.30936e-15, 0.89088, -0.454239, -0.065, 0.37, 0)
+
+[node name="LowerArm" type="MeshInstance3D" parent="RobotBase/MountingPoint1/Node3D/UpperArm/LowerArmAttachmentLeft"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 3.55271e-15, 0, -3.55271e-15, 1, -1.49012e-08, 0.4005, 0)
+mesh = ExtResource("3_onscu")
+skeleton = NodePath("../..")
+
+[node name="LowerArmAttachmentRight" type="Node3D" parent="RobotBase/MountingPoint1/Node3D/UpperArm"]
+transform = Transform3D(1, 4.33397e-08, 2.65503e-08, 2.98023e-08, -0.454239, -0.89088, 1.30936e-15, 0.89088, -0.454239, 0.065, 0.37, 0)
+
+[node name="LowerArm" type="MeshInstance3D" parent="RobotBase/MountingPoint1/Node3D/UpperArm/LowerArmAttachmentRight"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 3.55271e-15, 0, -3.55271e-15, 1, -1.49012e-08, 0.4005, 0)
+mesh = ExtResource("3_onscu")
+skeleton = NodePath("../..")
+
+[node name="MountingPoint2" type="Node3D" parent="RobotBase"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, -0.05, 0)
+
+[node name="Node3D" type="Node3D" parent="RobotBase/MountingPoint2"]
+transform = Transform3D(1.184e-08, 0.999029, 0.0440604, 3.85189e-09, 0.0440604, -0.999029, -1, 1.19982e-08, -3.32647e-09, 0.5, 0, 0)
+
+[node name="UpperArm" type="MeshInstance3D" parent="RobotBase/MountingPoint2/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = ExtResource("2_awnur")
+
+[node name="LowerArmAttachmentLeft" type="Node3D" parent="RobotBase/MountingPoint2/Node3D/UpperArm"]
+transform = Transform3D(1, 4.33397e-08, 2.65503e-08, 2.98023e-08, -0.454239, -0.89088, 1.30936e-15, 0.89088, -0.454239, -0.065, 0.37, 0)
+
+[node name="LowerArm" type="MeshInstance3D" parent="RobotBase/MountingPoint2/Node3D/UpperArm/LowerArmAttachmentLeft"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 3.55271e-15, 0, -3.55271e-15, 1, -1.49012e-08, 0.4005, 0)
+mesh = ExtResource("3_onscu")
+skeleton = NodePath("../..")
+
+[node name="LowerArmAttachmentRight" type="Node3D" parent="RobotBase/MountingPoint2/Node3D/UpperArm"]
+transform = Transform3D(1, 4.33397e-08, 2.65503e-08, 2.98023e-08, -0.454239, -0.89088, 1.30936e-15, 0.89088, -0.454239, 0.065, 0.37, 0)
+
+[node name="LowerArm" type="MeshInstance3D" parent="RobotBase/MountingPoint2/Node3D/UpperArm/LowerArmAttachmentRight"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 3.55271e-15, 0, -3.55271e-15, 1, -1.49012e-08, 0.4005, 0)
+mesh = ExtResource("3_onscu")
+skeleton = NodePath("../..")
+
+[node name="MountingPoint3" type="Node3D" parent="RobotBase"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, -0.05, 0)
+
+[node name="Node3D" type="Node3D" parent="RobotBase/MountingPoint3"]
+transform = Transform3D(7.54979e-08, 0.999029, -0.0440604, 0, -0.0440604, -0.999029, -1, 7.54246e-08, -3.32647e-09, 0.5, 0, 0)
+
+[node name="UpperArm" type="MeshInstance3D" parent="RobotBase/MountingPoint3/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = ExtResource("2_awnur")
+
+[node name="LowerArmAttachmentLeft" type="Node3D" parent="RobotBase/MountingPoint3/Node3D/UpperArm"]
+transform = Transform3D(1, 4.33397e-08, 2.65503e-08, 2.98023e-08, -0.454239, -0.89088, 1.30936e-15, 0.89088, -0.454239, -0.065, 0.37, 0)
+
+[node name="LowerArm" type="MeshInstance3D" parent="RobotBase/MountingPoint3/Node3D/UpperArm/LowerArmAttachmentLeft"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 3.55271e-15, 0, -3.55271e-15, 1, -1.49012e-08, 0.4005, 0)
+mesh = ExtResource("3_onscu")
+skeleton = NodePath("../..")
+
+[node name="LowerArmAttachmentRight" type="Node3D" parent="RobotBase/MountingPoint3/Node3D/UpperArm"]
+transform = Transform3D(1, 4.33397e-08, 2.65503e-08, 2.98023e-08, -0.454239, -0.89088, 1.30936e-15, 0.89088, -0.454239, 0.065, 0.37, 0)
+
+[node name="LowerArm" type="MeshInstance3D" parent="RobotBase/MountingPoint3/Node3D/UpperArm/LowerArmAttachmentRight"]
+transform = Transform3D(1, 0, 0, 2.98023e-08, 1, 3.55271e-15, 0, -3.55271e-15, 1, -1.49012e-08, 0.4005, 0)
+mesh = ExtResource("3_onscu")
+skeleton = NodePath("../..")
+
+[node name="TcpFlange" type="MeshInstance3D" parent="RobotBase"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.81637, 0)
+mesh = SubResource("CylinderMesh_d02gm")
+
+[node name="Node3D" type="Node3D" parent="RobotBase/TcpFlange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.005, 0)
+
+[node name="Tcp" type="MeshInstance3D" parent="RobotBase/TcpFlange/Node3D"]
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00750691, 0, 0.947715)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 31.0
+text = "Calc"
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

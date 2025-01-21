@@ -2,70 +2,57 @@
 import os
 import sys
 
-from methods import print_error
+env = SConscript("godot-cpp/SConstruct")
 
+# For reference:
+# - CCFLAGS are compilation flags shared between C and C++
+# - CFLAGS are for C-specific compilation flags
+# - CXXFLAGS are for C++-specific compilation flags
+# - CPPFLAGS are for pre-processor flags
+# - CPPDEFINES are for pre-processor defines
+# - LINKFLAGS are for linking flags
 
-libname = "godot-ads"
-projectdir = "demo"
-
-localEnv = Environment(tools=["default"], PLATFORM="")
-
-customs = ["custom.py"]
-customs = [os.path.abspath(path) for path in customs]
-
-opts = Variables(customs, ARGUMENTS)
-opts.Update(localEnv)
-
-Help(opts.GenerateHelpText(localEnv))
-
-env = localEnv.Clone()
-
-submodule_initialized = False
-dir_name = 'godot-cpp'
-if os.path.isdir(dir_name):
-    if os.listdir(dir_name):
-        submodule_initialized = True
-
-if not submodule_initialized:
-    print_error("""godot-cpp is not available within this folder, as Git submodules haven't been initialized.
-Run the following command to download godot-cpp:
-
-    git submodule update --init --recursive""")
-    sys.exit(1)
-
-env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
-
-env.Append(CPPPATH=["src/"])
-env.Append(LIBS=["TcAdsDll"])
+# tweak this if you want to use different folders, or more folders, to store your source code in.
+env.Append(CPPPATH=["src/","include/TcAdsDll"])
+#env.Append(LIBS=["TcAdsDll.lib"])
 env.Append(LIBPATH=["lib/"])
+env.Append(LINKFLAGS=["TcAdsDll" + Environment()['LIBSUFFIX']])
+#env.Append(LIBS=[File('lib/TcAdsDll.lib')])
+
+
 sources = Glob("src/*.cpp")
 
-sources.append(Glob("lib/TcAdsDll.lib")[0])
+if env["platform"] == "macos":
+    library = env.SharedLibrary(
+        "demo/bin/libgdexample.{}.{}.framework/libgdexample.{}.{}".format(
+            env["platform"], env["target"], env["platform"], env["target"]
+        ),
+        source=sources,
+    )
+elif env["platform"] == "ios":
+    if env["ios_simulator"]:
+        library = env.StaticLibrary(
+            "demo/bin/libgdexample.{}.{}.simulator.a".format(env["platform"], env["target"]),
+            source=sources,
+        )
+    else:
+        library = env.StaticLibrary(
+            "demo/bin/godot-ads.{}.{}.a".format(env["platform"], env["target"]),
+            source=sources,
+        )
+else:
+    # dlls = [
+    #     "lib/TcAdsDll.lib"
+    # ]
+    # for dll in dlls:
+    #     env.Command(
+    #         target=os.path.join("demo/bin/", os.path.basename(dll)),
+    #         source=dll,
+    #         action=Copy("$TARGET", "$SOURCE")
+    #     )
+    library = env.SharedLibrary(
+        "demo/bin/godot-ads{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        source=sources,
+    )
 
-if env["target"] in ["editor", "template_debug"]:
-    try:
-        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
-        sources.append(doc_data)
-    except AttributeError:
-        print("Not including class reference as we're targeting a pre-4.3 baseline.")
-
-file = "{}{}{}".format(libname, env["suffix"], env["SHLIBSUFFIX"])
-filepath = ""
-
-if env["platform"] == "macos" or env["platform"] == "ios":
-    filepath = "{}.framework/".format(env["platform"])
-    file = "{}.{}.{}".format(libname, env["platform"], env["target"])
-
-
-
-print(env.Command)
-libraryfile = "bin/{}/{}{}".format(env["platform"], filepath, file)
-library = env.SharedLibrary(
-    libraryfile,
-    source=sources,
-)
-
-copy = env.InstallAs("{}/bin/{}/{}lib{}".format(projectdir, env["platform"], filepath, file), library)
-
-default_args = [library, copy]
-Default(*default_args)
+Default(library)

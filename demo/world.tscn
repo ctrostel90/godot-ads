@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://ps7edfqxw6kc"]
+
+[ext_resource type="Script" uid="uid://duv45cfeiy5ct" path="res://world.gd" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://fto6x0qu4mwj" path="res://camera_3d.gd" id="2_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://coeuari6eempm" path="res://checker.svg" id="2_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://clfcp2ewgr4gw" path="res://ui_test.tscn" id="4_036b0"]
+[ext_resource type="PackedScene" uid="uid://fi0tgg7ovrkg" path="res://Scara/scara_s_cczc.tscn" id="4_aqk2v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv5m4"]
+albedo_texture = ExtResource("2_tlwt5")
+uv1_scale = Vector3(32, 32, 32)
+
+[sub_resource type="QuadMesh" id="QuadMesh_f3sb7"]
+material = SubResource("StandardMaterial3D_gv5m4")
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj7yv"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fj7yv"]
+material = SubResource("StandardMaterial3D_fj7yv")
+radius = 0.1
+height = 0.2
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_f3sb7")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.381711, 0)
+mesh = SubResource("QuadMesh_f3sb7")
+
+[node name="GodotADS" type="GodotADS" parent="."]
+
+[node name="TCP" type="MeshInstance3D" parent="GodotADS"]
+mesh = SubResource("SphereMesh_fj7yv")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.767742, 0.369871, -0.523228, 0.0306762, 0.794423, 0.60659, 0.640024, -0.481755, 0.598566, -0.283794, 3.8004, 6.30398)
+script = ExtResource("2_fj7yv")
+
+[node name="CanvasLayer" parent="." instance=ExtResource("4_036b0")]
+
+[node name="Tree2" type="Tree" parent="CanvasLayer"]
+offset_left = 6.0
+offset_top = 43.0
+offset_right = 656.0
+offset_bottom = 507.0
+columns = 3
+hide_root = true
+
+[node name="Button2" type="Button" parent="CanvasLayer"]
+offset_left = 12.0
+offset_top = 516.0
+offset_right = 45.0
+offset_bottom = 547.0
+text = "Col
+"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.560162, 0.828383, 0, -0.828383, 0.560162, 0, 14.5238, 6.92552)
+
+[node name="Scara_S_CCZC" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[connection signal="clicked" from="CanvasLayer" to="." method="_on_canvas_layer_clicked"]
+[connection signal="connect_axes" from="CanvasLayer" to="." method="_on_canvas_layer_connect_axes"]
+[connection signal="cell_selected" from="CanvasLayer/Tree2" to="." method="_on_tree_2_cell_selected"]
+[connection signal="item_selected" from="CanvasLayer/Tree2" to="." method="_on_tree_2_item_selected"]
+[connection signal="pressed" from="CanvasLayer/Button2" to="." method="_on_button_2_pressed"]

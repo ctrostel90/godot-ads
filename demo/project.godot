@@ -11,6 +11,16 @@ config_version=5
 [application]
 
 config/name="godot cpp template"
-run/main_scene="res://main.tscn"
+run/main_scene="uid://ps7edfqxw6kc"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
+[rendering]
+
+textures/default_filters/use_nearest_mipmap_filter=true
+environment/defaults/default_clear_color=Color(1, 1, 1, 1)

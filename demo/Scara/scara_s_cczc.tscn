@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://fi0tgg7ovrkg"]
+
+[ext_resource type="Script" uid="uid://cvq0qyk7rkd3p" path="res://Scara/scara_s_cczc.gd" id="1_dangs"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jdt4q"]
+height = 4.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_c3evm"]
+height = 3.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dhsjt"]
+top_radius = 0.063
+bottom_radius = 0.063
+
+[sub_resource type="BoxMesh" id="BoxMesh_f42wk"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[node name="Scara_S_CCZC" type="Node3D"]
+script = ExtResource("1_dangs")
+BicepLength = 4.0
+BicepRadius = 0.5
+ForearmLength = 3.0
+ForearmRadius = 0.5
+EnableKinematic = true
+Y = 8.0
+
+[node name="Bicep" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 2)
+mesh = SubResource("CapsuleMesh_jdt4q")
+
+[node name="Elbow" type="Node3D" parent="Bicep"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="Forearm" type="MeshInstance3D" parent="Bicep/Elbow"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("CapsuleMesh_c3evm")
+
+[node name="Wrist" type="Node3D" parent="Bicep/Elbow/Forearm"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bicep/Elbow/Forearm/Wrist"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CylinderMesh_dhsjt")
+
+[node name="Tcp" type="Node3D" parent="Bicep/Elbow/Forearm/Wrist/MeshInstance3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="Tool" type="MeshInstance3D" parent="Bicep/Elbow/Forearm/Wrist/MeshInstance3D/Tcp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0)
+mesh = SubResource("BoxMesh_f42wk")
